@@ -8,6 +8,8 @@ import SignUpPage from './pages/register-pages/SignUpPage';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import MakeDecisionPage from './pages/MakeDecision';
+import SignInPage from './pages/register-pages/signin';
+import Main from './pages/main';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,8 +27,10 @@ const app = initializeApp(firebaseConfig);
 function App() {
   return (
     <Router>
-      <Routes><Route path={PageRoutes.Signup} Component={SignUpPage} /></Routes>
-      <Routes><Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} /></Routes>
+        <Routes><Route path={PageRoutes.Main} Component={Main} /></Routes>
+        <Routes><Route path={PageRoutes.Signup} Component={SignUpPage} /></Routes>
+        <Routes><Route path={PageRoutes.Signin} Component={SignInPage} /></Routes>
+        <Routes><Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} /></Routes>
     </Router>
   );
 }
