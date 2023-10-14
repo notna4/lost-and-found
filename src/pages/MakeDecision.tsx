@@ -11,12 +11,12 @@ const MakeDecisionPage = () => {
     const [user, setUser] = useState("");
 
     onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log(user);
-         setUser(user.displayName!);
-    } else {
-        navigate("/signup");
-    }
+      if (user) {
+          console.log(user);
+          setUser(user.displayName!);
+      } else {
+          navigate("/signup");
+      }
     });
 
   return (

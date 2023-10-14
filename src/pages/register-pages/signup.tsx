@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 
 const SignUpPage: React.FC = () => {
-    const auth = getAuth();
-    const navigate = useNavigate();
+  const auth = getAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     email: '',

@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { PageRoutes } from './routes/routes';
 
 import SignUpPage from './pages/register-pages/signup';
 // Import the functions you need from the SDKs you need
@@ -21,13 +22,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
-
 function App() {
   return (
     <Router>
-        <Routes><Route path="/signup"  Component={SignUpPage} /></Routes>
-        <Routes><Route path="/make-decision" Component={MakeDecisionPage} /></Routes>
+        <Routes><Route path={PageRoutes.Signup} Component={SignUpPage} /></Routes>
+        <Routes><Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} /></Routes>
     </Router>
   );
 }
