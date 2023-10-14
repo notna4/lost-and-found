@@ -12,10 +12,9 @@ const Main = () => {
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
-          console.log(user);
           setUser(user.displayName!);
       } else {
-          navigate(PageRoutes.Signup);
+          navigate(PageRoutes.Signin);
       }
     });
 

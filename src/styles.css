@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body {
+  background-color: #0E0E0E;
+  color: white;
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Inter', sans-serif;
+}
+
 .form-container {
   max-width: 400px;
   margin: 1 auto;
@@ -22,5 +32,89 @@
   margin: 20px 0;
   border-radius: 5px;
   border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.divide-page {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100vh; /* 100% viewport height */
+  overflow: hidden; /* Hide scrollbars */
+}
+
+.left-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  padding: 20px;
+  width: 50%; /* 50% width on desktop */
+}
+
+.right-side {
+  /* Styles for the right side content (empty on desktop) */
+  width: 50%; /* 50% width on desktop */
+}
+
+.register-header {
+  color: white;
+}
+
+/* Media query for desktop layout */
+@media (min-width: 769px) {
+  .divide-page {
+    flex-direction: row; /* Split into two sides on desktop */
+  }
+}
+
+/* Media query for mobile layout */
+@media (max-width: 768px) {
+  .divide-page {
+    flex-direction: column; /* Stack everything vertically on mobile */
+  }
+}
+
+.register-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 10;
+}
+
+.input-form {
+  font-size: medium;
+  padding-left: 20px;
+  color: rgb(214, 213, 213);
+  width: 284px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 17px;
+  border: 1px solid #505050;
+  background: #1B1B1B;
+  font-family: Inter;
+  outline: none;
+}
+
+.input-form-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn {
+  text-align: start;
+  font-size: medium;
+  color: rgb(214, 213, 213);
+  padding-left: 20px;
+  width: 284px;
+  height: 58px;
+  flex-shrink: 0;
+  border-radius: 17px;
+  border: 1px solid #505050;
+  background: #1B1B1B;
+  font-family: Inter;
+  font-weight: 700;
   cursor: pointer;
 }
