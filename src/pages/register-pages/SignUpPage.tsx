@@ -69,15 +69,15 @@ const SignUpPage: React.FC = () => {
   }, [formData]);
 
   return (
-    <div>
+    <div className="form-container">
       <h1>Lost something?
           You’ve come to the right place!</h1>
       <h1>Create an account</h1>
       <form>
         <div>
-          <label className='label'>Username:</label>
           <input
             className="input-field"
+            placeholder="Username"
             type="text"
             name="username"
             value={formData.username}
@@ -85,9 +85,9 @@ const SignUpPage: React.FC = () => {
           />
         </div>
         <div>
-          <label className='label'>Email:</label>
           <input
             className="input-field"
+            placeholder="Email"
             type="email"
             name="email"
             value={formData.email}
@@ -95,9 +95,9 @@ const SignUpPage: React.FC = () => {
           />
         </div>
         <div>
-          <label className="label">Password:</label>
           <input
-            input-field="input-field"
+            className="input-field"
+            placeholder="Password"
             type="password"
             name="password"
             value={formData.password}
@@ -105,9 +105,9 @@ const SignUpPage: React.FC = () => {
           />
         </div>
         <div>
-          <label className="label">Confirm Password:</label>
           <input
             className="input-field"
+            placeholder="Confirm Password"
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
