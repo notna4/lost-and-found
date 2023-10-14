@@ -40,7 +40,7 @@ const SignUpPage: React.FC = () => {
                 displayName: formData.username,
             })
             .then(() => {
-                console.log('User with updated username:', user);
+              navigate(PageRoutes.MakeDecision);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -48,9 +48,6 @@ const SignUpPage: React.FC = () => {
                 console.error('Error updating username:', errorCode, errorMessage);
             });
 
-            console.log(user);
-
-            navigate(PageRoutes.MakeDecision);
         })
         .catch((error) => {
             const errorCode = error.code;
