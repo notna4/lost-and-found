@@ -4,7 +4,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PageRoutes } from './routes/routes';
 
-import SignUpPage from './pages/register-pages/signup';
+import SignUpPage from './pages/register-pages/SignUpPage';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import MakeDecisionPage from './pages/MakeDecision';
