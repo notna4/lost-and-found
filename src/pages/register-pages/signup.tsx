@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import { PageRoutes } from '../../routes/routes';
 
 
 const SignUpPage: React.FC = () => {
@@ -50,7 +51,7 @@ const SignUpPage: React.FC = () => {
 
             console.log(user);
 
-            navigate("/make-decision");
+            navigate(PageRoutes.MakeDecision);
         })
         .catch((error) => {
             const errorCode = error.code;

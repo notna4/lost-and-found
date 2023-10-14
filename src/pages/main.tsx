@@ -3,9 +3,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../routes/routes';
 
+const Main = () => {
 
-
-const MakeDecisionPage = () => {
     const auth = getAuth();
     const navigate = useNavigate();
 
@@ -20,13 +19,16 @@ const MakeDecisionPage = () => {
       }
     });
 
-  return (
-    <div>
-      <h1>Next Steps, {user}</h1>
-      <button>I lost an item</button>
-      <button>I found something</button>
-    </div>
-  );
-};
+    const logOut = () => {
+        auth.signOut();
+    }
+    
+    return(
+        <div>
+            <div>Main, {user}</div>
+            <button onClick={logOut}>Log out</button>
+        </div>
+    );
+}
 
-export default MakeDecisionPage;
+export default Main;
