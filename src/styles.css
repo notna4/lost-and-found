@@ -83,13 +83,17 @@ html, body {
   gap: 10px;
 }
 
+.button-container {
+  margin-top: 40px; 
+}
+
 .btn {
   text-align: start;
   font-size: medium;
   color: rgb(214, 213, 213);
   padding-left: 20px;
-  width: 284px;
   height: 58px;
+  width: 284px;
   flex-shrink: 0;
   border-radius: 17px;
   border: 1px solid #505050;

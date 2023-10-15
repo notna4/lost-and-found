@@ -113,11 +113,13 @@ const SignUpPage: React.FC = () => {
                 onChange={handleInputChange}
               />
             </div>
+            <div className="button-container">
+              <button className="btn" onClick={handleSubmit} disabled={!isFormValid}>
+                Next
+              </button>
+            </div>
+            <div className="text-hover" onClick={() => navigate(PageRoutes.Signin)}><u>Already have an account? Sign In</u></div>
           </form>
-          <button className="btn" onClick={handleSubmit} disabled={!isFormValid}>
-            Next
-          </button>
-          <div className="text-hover" onClick={() => navigate(PageRoutes.Signin)}><u>Already have an account? Sign In</u></div>
         </div>
       </div>
       <div className='right-side'>
