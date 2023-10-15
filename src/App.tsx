@@ -9,7 +9,7 @@ import SignUpPage from './pages/register-pages/SignUpPage';
 import { initializeApp } from "firebase/app";
 import MakeDecisionPage from './pages/MakeDecision';
 import SignInPage from './pages/register-pages/SignInPage';
-import Main from './pages/Main';
+import MainPage from './pages/MainPage';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -27,10 +27,10 @@ const app = initializeApp(firebaseConfig);
 function App() {
   return (
     <Routes>
-        <Route path={PageRoutes.Main} Component={Main} />
-        <Route path={PageRoutes.Signup} Component={SignUpPage} />
-        <Route path={PageRoutes.Signin} Component={SignInPage} />
-        <Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} />
+      <Route path={PageRoutes.Main} Component={MainPage} />
+      <Route path={PageRoutes.Signup} Component={SignUpPage} />
+      <Route path={PageRoutes.Signin} Component={SignInPage} />
+      <Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} />
     </Routes>
   );
 }
