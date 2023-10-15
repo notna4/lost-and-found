@@ -66,55 +66,63 @@ const SignUpPage: React.FC = () => {
   }, [formData]);
 
   return (
-    <div className="form-container">
-      <h1>Lost something?
-          You’ve come to the right place!</h1>
-      <h1>Create an account</h1>
-      <form>
-        <div>
-          <input
-            className="input-field"
-            placeholder="Username"
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleInputChange}
-          />
+    <div className="divide-page">
+      <div className='left-side'>
+        <div className='register-box'>
+          <h1 className="register-headers">Lost something?<br />
+              You’ve come to the right place!</h1>
+          <h1 className="register-headers">Create an account</h1>
+          <form className='input-form-box'>
+            <div>
+              <input
+                className="input-form"
+                placeholder="Username"
+                type="text"
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <input
+                className="input-form"
+                placeholder="Email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <input
+                className="input-form"
+                placeholder="Password"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div>
+              <input
+                className="input-form"
+                placeholder="Confirm Password"
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+              />
+            </div>
+          </form>
+          <button className="btn" onClick={handleSubmit} disabled={!isFormValid}>
+            Next
+          </button>
+          <div className="text-hover" onClick={() => navigate(PageRoutes.Signin)}><u>Already have an account? Sign In</u></div>
         </div>
-        <div>
-          <input
-            className="input-field"
-            placeholder="Email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <input
-            className="input-field"
-            placeholder="Password"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <input
-            className="input-field"
-            placeholder="Confirm Password"
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-          />
-        </div>
-      </form>
-      <button className="button" onClick={handleSubmit} disabled={!isFormValid}>
-        Next
-      </button>
+      </div>
+      <div className='right-side'>
+
+      </div>
     </div>
   );
 };
