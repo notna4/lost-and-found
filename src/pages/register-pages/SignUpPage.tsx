@@ -3,6 +3,8 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase
 import { useNavigate } from 'react-router-dom';
 import '../../styles.css';
 import { PageRoutes } from '../../routes/routes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const SignUpPage: React.FC = () => {
   const auth = getAuth();
@@ -15,7 +17,14 @@ const SignUpPage: React.FC = () => {
     username: '',
   });
 
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordRequirementsVisible, setPasswordRequirementsVisible] = useState(false);
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -24,14 +33,23 @@ const SignUpPage: React.FC = () => {
       ...formData,
       [name]: value,
     });
+
+    clearValidationErrors(name);
   };
 
-  const handleSubmit = () => {
-    if (formData.password === formData.confirmPassword) {
-      console.log('Email:', formData.email);
-      console.log('Password:', formData.password);
-      console.log('Username:', formData.username);
+  const handlePasswordInputFocus = () => {
+    setPasswordRequirementsVisible(true);
+  };
 
+  const handlePasswordInputBlur = () => {
+    setPasswordRequirementsVisible(false);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    validateForm();
+
+    if (isFormValid) {
       createUserWithEmailAndPassword(auth, formData.email, formData.password)
         .then((userCredential) => {
             const user = userCredential.user;
@@ -47,23 +65,70 @@ const SignUpPage: React.FC = () => {
                 const errorMessage = error.message;
                 console.error('Error updating username:', errorCode, errorMessage);
             });
-
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
         });
+        navigate(PageRoutes.Main);
     }
   };
 
-  React.useEffect(() => {
-    setIsFormValid(
-      formData.email !== '' &&
-        formData.password !== '' &&
-        formData.confirmPassword !== '' &&
-        formData.username !== ''
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const clearValidationErrors = (name: string) => {
+    switch (name) {
+      case 'username':
+        setUsernameError('');
+        break;
+      case 'email':
+        setEmailError('');
+        break;
+      case 'password':
+        setPasswordError('');
+        break;
+      case 'confirmPassword':
+        setConfirmPasswordError('');
+        break;
+      default:
+        break;
+    }
+  };
+
+  const validateForm = () => {
+    const isEmailValid = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(formData.email);
+    const isUsernameValid = formData.username.length >= 4;
+    const isPasswordValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(formData.password);
+    const isConfirmPasswordEmpty = formData.confirmPassword === '';
+    const isConfirmPasswordValid = formData.password === formData.confirmPassword;
+
+    setEmailError(isEmailValid ? '' : 'Invalid email');
+    setUsernameError(isUsernameValid ? '' : 'Username must be at least 4 characters long');
+    setPasswordError(isPasswordValid ? '' : 'Password does not meet the criteria');
+    setConfirmPasswordError(
+      isConfirmPasswordEmpty
+        ? 'Please confirm your password'
+        : isConfirmPasswordValid
+        ? ''
+        : 'Passwords do not match'
     );
-  }, [formData]);
+
+    setIsFormValid(isEmailValid && isUsernameValid && isPasswordValid && isConfirmPasswordValid);
+  };
+
+  const passwordRequirementsSection = passwordRequirementsVisible && (
+    <div className="password-requirements">
+      Your password must meet the following criteria:
+      <ul>
+        <li>At least one uppercase letter (A-Z).</li>
+        <li>At least one lowercase letter (a-z).</li>
+        <li>At least one number (0-9).</li>
+        <li>At least one special character (e.g., !, @, #, $, etc).</li>
+      </ul>
+    </div>
+  );
 
   return (
     <div className="divide-page">
@@ -82,6 +147,7 @@ const SignUpPage: React.FC = () => {
                 value={formData.username}
                 onChange={handleInputChange}
               />
+              <div className="error-text">{usernameError}</div>
             </div>
             <div>
               <input
@@ -92,29 +158,40 @@ const SignUpPage: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
               />
+              <div className="error-text">{emailError}</div>
             </div>
             <div>
               <input
                 className="input-form"
                 placeholder="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
+                onFocus={handlePasswordInputFocus}
+                onBlur={handlePasswordInputBlur}
               />
+              <div className="error-text">{passwordError}</div>
+              {passwordRequirementsSection}
             </div>
             <div>
-              <input
-                className="input-form"
-                placeholder="Confirm Password"
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-              />
+              <div>
+                <input
+                  className="input-form"
+                  placeholder="Confirm Password"
+                  type={showPassword ? 'text' : 'password'}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                />
+                <span className="toggle-password" onClick={toggleShowPassword}>
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </span>
+              </div>
+              <div className="error-text">{confirmPasswordError}</div>
             </div>
             <div className="button-container">
-              <button className="btn" onClick={handleSubmit} disabled={!isFormValid}>
+              <button className="btn" onClick={handleSubmit} >
                 Next
               </button>
             </div>

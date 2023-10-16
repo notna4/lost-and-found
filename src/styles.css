@@ -74,7 +74,6 @@ html, body {
 .input-form:hover {
   font-weight: bold; 
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
-  
 }
 
 .input-form-box {
@@ -87,13 +86,20 @@ html, body {
   margin-top: 40px; 
 }
 
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
 .btn {
   text-align: start;
   font-size: medium;
   color: rgb(214, 213, 213);
   padding-left: 20px;
   height: 58px;
-  width: 284px;
+  width: 308px;
   flex-shrink: 0;
   border-radius: 17px;
   border: 1px solid #505050;
@@ -119,4 +125,13 @@ html, body {
 .text-hover:hover {
   font-weight: bold; 
   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.toggle-password {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.password-requirements {
+  padding: 10px;
 }
