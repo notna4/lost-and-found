@@ -1,6 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PageRoutes } from './routes/routes';
 
@@ -10,6 +8,8 @@ import { initializeApp } from "firebase/app";
 import MakeDecisionPage from './pages/MakeDecision';
 import SignInPage from './pages/register-pages/SignInPage';
 import MainPage from './pages/MainPage';
+import Lost from './pages/create-posts/create-lost';
+import Find from './pages/create-posts/create-find';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -31,6 +31,8 @@ function App() {
       <Route path={PageRoutes.Signup} Component={SignUpPage} />
       <Route path={PageRoutes.Signin} Component={SignInPage} />
       <Route path={PageRoutes.MakeDecision} Component={MakeDecisionPage} />
+      <Route path={PageRoutes.CreateLost} Component={Lost} />
+      <Route path={PageRoutes.CreateFind} Component={Find} />
     </Routes>
   );
 }
