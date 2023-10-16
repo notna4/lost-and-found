@@ -34,6 +34,12 @@ html, body {
   color: white;
 }
 
+.register-subheader {
+  color: white;
+  font-family: Inter;
+  font-weight: 400;
+}
+
 /* Media query for desktop layout */
 @media (min-width: 769px) {
   .divide-page {
@@ -84,6 +90,12 @@ html, body {
 
 .button-container {
   margin-top: 40px; 
+}
+
+.column-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .error-text {
