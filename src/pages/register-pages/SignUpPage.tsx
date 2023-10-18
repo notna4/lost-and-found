@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, fetchSignInMethodsForEmail } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import '../../styles.css';
 import { PageRoutes } from '../../routes/routes';
@@ -25,7 +25,6 @@ const SignUpPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [passwordRequirementsVisible, setPasswordRequirementsVisible] = useState(false);
 
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
@@ -45,32 +44,54 @@ const SignUpPage: React.FC = () => {
     setPasswordRequirementsVisible(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const checkIfEmailExists = async (email: string) => {
+    const auth = getAuth();
+
+    try {
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+
+      if (methods && methods.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error("Error checking email:", error);
+      return false;
+    }
+  };
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     validateForm();
 
     if (isFormValid) {
-      createUserWithEmailAndPassword(auth, formData.email, formData.password)
-        .then((userCredential) => {
-            const user = userCredential.user;
+      const emailExists = await checkIfEmailExists(formData.email);
 
-            updateProfile(user, {
-                displayName: formData.username,
-            })
-            .then(() => {
-              navigate(PageRoutes.MakeDecision);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                console.error('Error updating username:', errorCode, errorMessage);
-            });
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-        navigate(PageRoutes.Main);
+      if (emailExists) {
+        setEmailError("Email is already in use");
+      } else {
+        createUserWithEmailAndPassword(auth, formData.email, formData.password)
+          .then((userCredential) => {
+              const user = userCredential.user;
+              updateProfile(user, {
+                  displayName: formData.username,
+              })
+              .then(() => {
+                navigate(PageRoutes.MakeDecision);
+              })
+              .catch((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  console.error('Error updating username:', errorCode, errorMessage);
+              });
+          })
+          .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+          });
+      }
     }
   };
 
@@ -191,7 +212,7 @@ const SignUpPage: React.FC = () => {
               <div className="error-text">{confirmPasswordError}</div>
             </div>
             <div className="button-container">
-              <button className="btn" onClick={handleSubmit} >
+              <button type="submit" className="btn" onClick={handleSubmit} >
                 Next
               </button>
             </div>
