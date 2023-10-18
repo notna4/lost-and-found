@@ -15,6 +15,7 @@ const SignInPage: React.FC = () => {
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,11 +32,30 @@ const SignInPage: React.FC = () => {
     signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate("/");
+        navigate(PageRoutes.Main);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+
+        switch (errorCode) {
+          case "auth/user-not-found":
+            setErrorMessage("User not found. Please check your email or sign up");
+            break;
+          case "auth/wrong-password":
+            setErrorMessage("Incorrect password. Please try again");
+            break;
+          case "auth/invalid-email":
+            setErrorMessage("Invalid email address. Please enter a valid email");
+            break;
+          case "auth/network-request-failed":
+            setErrorMessage("Network request failed. Please check your internet connection");
+            break;
+          default:
+            setErrorMessage("An error occurred. Please try again later");
+            break;
+        }
+        
       });
   };
 
@@ -73,6 +93,7 @@ const SignInPage: React.FC = () => {
                 value={formData.password}
                 onChange={handleInputChange}
               />
+              <div className="error-text">{errorMessage}</div>
             </div>
             <div className="button-container">
               <button className='btn' onClick={handleSubmit} disabled={!isFormValid}>
