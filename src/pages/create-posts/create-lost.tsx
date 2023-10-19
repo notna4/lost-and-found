@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles.css';
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../../routes/routes';
+
 
 interface FormData {
   q1: string;
@@ -9,10 +10,12 @@ interface FormData {
   q3: string;
   q4: string;
   q5: string;
+  q6: string;
 }
 
 const Lost = () => {
   const [progress, setProgress] = useState(10);
+  const [qimageUrl, setqImageUrl] = useState("");
   const backSign = "<-";
   const Sign = "->";
   const navigate = useNavigate();
@@ -48,6 +51,12 @@ const Lost = () => {
         placeholder: "Select date",
         name: "q5",
     },
+    {
+      title: "Select an image",
+      type: "text",
+      placeholder: "Sunglasses, phone..",
+      name: "q6",
+    },
   ];
 
   const [step, setStep] = useState(0);
@@ -72,6 +81,7 @@ const Lost = () => {
     q3: '',
     q4: '',
     q5: '',
+    q6: '',
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +92,34 @@ const Lost = () => {
       [name]: value,
     });
   };
+
+  const [curatedPhotos, setCuratedPhotos] = useState<any[]>([]);
+
+  const fetchCuratedPhotos = async (query: string) => {
+    try {
+      const response = await fetch(`https://api.pexels.com/v1/search?query=${query}&per_page=30`, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          Authorization: "563492ad6f9170000100000176d86d1a24b44141b1771090ff5ddeea",
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // console.log(data.photos[0]);
+        setCuratedPhotos(data.photos);
+      } else {
+        console.error('Error fetching data');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+
+  useEffect(() => {
+    // fetchCuratedPhotos(1); // Fetch curated photos for page 1 when the component mounts
+  }, []);
 
   return (
     <div>
@@ -112,13 +150,33 @@ const Lost = () => {
               </button>
             )}
             {step === questions.length - 1 && (
-              <button className='btn' onClick={() => console.log(formData)}>
-                Submit
-              </button>
+              <div className='photos-box'>
+                <button className='btn' onClick={() => {
+                  fetchCuratedPhotos(formData.q6);
+                }}>
+                  Search
+                </button>
+              </div>
             )}
+            
           </div>
         )}
       </div>
+      {step === questions.length - 1 && (
+        <div className='photos-api'>
+          {curatedPhotos.map((photo, index) => (
+            <img className='select-photo' key={index} src={photo.src.medium} onClick={() => setqImageUrl(photo.src.medium)} alt={`Photo ${index}`} />
+          ))}
+        </div>
+      )}
+      {step === questions.length - 1 && curatedPhotos.length !== 0 && (
+        <div className={`finish-box ${step === questions.length - 1 ? 'active' : ''}`}>
+          {qimageUrl !== "" && (
+            <img className='select-photo' key="sel-img" id="sel-img" src={qimageUrl} onClick={() => setqImageUrl("")} alt={`Photo selected`} />
+          )}
+          <button className='btn' id='shadow-btn' onClick={() => console.log(qimageUrl)}>Finish {Sign}</button>
+        </div>
+      )}
     </div>
   );
 }
