@@ -24,26 +24,27 @@ const Lost = () => {
     {
       title: "What did you lose?",
       type: "text",
-      placeholder: "Sunglasses, phone..",
+      placeholder: "Sunglasses, phone...",
       name: "q1",
     },
     {
         title: "What color was it?",
         type: "text",
-        placeholder: "Brown, blue..",
+        placeholder: "Brown, blue...",
         name: "q2",
     },
     {
       title: "How can someone get to you?",
       type: "text",
-      placeholder: "Phone number, mail..",
+      placeholder: "Phone number, mail...",
       name: "q3",
     },
     {
         title: "Where did you lose this?",
         type: "text",
-        placeholder: "Calea Torontalului..",
+        placeholder: "Calea Torontalului...",
         name: "q4",
+
     },
     {
         title: "When did this happen?",
@@ -54,12 +55,20 @@ const Lost = () => {
     {
       title: "Select an image",
       type: "text",
-      placeholder: "Sunglasses, phone..",
+      placeholder: "Sunglasses, phone...",
       name: "q6",
     },
   ];
 
   const [step, setStep] = useState(0);
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  const onNextPress = () => {
+    validateForm();
+    if (isFormValid) {
+      increaseProgress();
+    }
+  };
 
   const increaseProgress = () => {
     if (step < questions.length - 1) {
@@ -83,6 +92,15 @@ const Lost = () => {
     q5: '',
     q6: '',
   });
+
+  const [questionErrors, setQuestionErrors] = useState<string[]>([
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -117,6 +135,43 @@ const Lost = () => {
     }
   };
 
+  const getErrorByIndex = (index: number): string => {
+    if (index >= 0 && index < questionErrors.length) {
+      return questionErrors[index];
+    }
+    return ''; 
+  };
+
+  const setErrorAtIndex = (index: number, errorMessage: string) => {
+    if (index >= 0 && index < questionErrors.length) {
+      const updatedErrors = [...questionErrors];
+      updatedErrors[index] = errorMessage;
+      setQuestionErrors(updatedErrors);
+    }
+  };
+
+  const validateForm = () => {
+    // ! fix these
+    const regexString = /^.+/;
+    const regexColor = /^[A-Za-z]+$/; 
+    const regexStreetName = /^[A-Za-z0-9\s\.,-]+$/; 
+    const regexDate = /^\d{4}-\d{2}-\d{2}$/; 
+
+    const newErrors = [
+      // ! modify the errors and make more accurate checks
+      regexString.test(formData.q1) ? '' : 'Invalid string',
+      regexColor.test(formData.q2) ? '' : 'Invalid color',
+      regexString.test(formData.q3) ? '' : 'Invalid string',
+      regexStreetName.test(formData.q4) ? '' : 'Invalid street name',
+      regexDate.test(formData.q5) ? '' : 'Invalid date (YYYY-MM-DD)',
+      regexString.test(formData.q6) ? '' : 'Invalid string',
+    ];
+
+    setQuestionErrors(newErrors);
+
+    setIsFormValid(getErrorByIndex(step) === '');
+  };
+
   useEffect(() => {
     // fetchCuratedPhotos(1); // Fetch curated photos for page 1 when the component mounts
   }, []);
@@ -143,9 +198,10 @@ const Lost = () => {
                 value={formData[questions[step].name as keyof FormData] || ''}
                 onChange={handleInputChange}
               />
+              <div className="error-text">{getErrorByIndex(step)}</div>
             </div>
             {step < questions.length - 1 && (
-              <button className='btn' onClick={increaseProgress}>
+              <button className='btn' onClick={onNextPress}>
                 Next {Sign}
               </button>
             )}
