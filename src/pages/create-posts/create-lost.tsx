@@ -60,6 +60,15 @@ const Lost = () => {
     },
   ];
 
+  const commonColors: string[] = [
+    'red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink',
+    'brown', 'white', 'black', 'gray', 'silver', 'gold', 'indigo', 'cyan',
+    'magenta', 'lavender', 'teal', 'beige', 'turquoise', 'maroon', 'olive',
+    'violet', 'charcoal', 'coral', 'salmon', 'tan', 'mint', 'khaki', 'plum',
+    'slate', 'ivory', 'ruby', 'topaz', 'sapphire', 'emerald', 'amber',
+    'lemon', 'tangerine', 'orchid',
+  ];
+
   const [step, setStep] = useState(0);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -151,20 +160,18 @@ const Lost = () => {
   };
 
   const validateForm = () => {
-    // ! fix these
-    const regexString = /^.+/;
-    const regexColor = /^[A-Za-z]+$/; 
+    const regexString = /^[^\s]+/;
     const regexStreetName = /^[A-Za-z0-9\s\.,-]+$/; 
     const regexDate = /^\d{4}-\d{2}-\d{2}$/; 
+    const isColorValid = commonColors.includes(formData[questions[step].name as keyof FormData].toLowerCase());
 
     const newErrors = [
       // ! modify the errors and make more accurate checks
-      regexString.test(formData.q1) ? '' : 'Invalid string',
-      regexColor.test(formData.q2) ? '' : 'Invalid color',
-      regexString.test(formData.q3) ? '' : 'Invalid string',
-      regexStreetName.test(formData.q4) ? '' : 'Invalid street name',
-      regexDate.test(formData.q5) ? '' : 'Invalid date (YYYY-MM-DD)',
-      regexString.test(formData.q6) ? '' : 'Invalid string',
+      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid string',
+      isColorValid ? '' : 'Invalid color',
+      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid string',
+      regexStreetName.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid street name',
+      regexDate.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid date (YYYY-MM-DD)',
     ];
 
     setQuestionErrors(newErrors);
