@@ -222,6 +222,11 @@ html, body {
 
 .photos-box {
   margin-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .photos-api {
