@@ -83,6 +83,7 @@ const Lost = () => {
     if (step < questions.length - 1) {
       setStep(step + 1);
       setProgress(progress + 10);
+      setIsFormValid(false);
     }
   };
 
@@ -90,6 +91,7 @@ const Lost = () => {
     if (step > 0) {
       setStep(step - 1);
       setProgress(progress - 10);
+      setIsFormValid(false);
     }
   };
 
@@ -103,11 +105,11 @@ const Lost = () => {
   });
 
   const [questionErrors, setQuestionErrors] = useState<string[]>([
-    '',
-    '',
-    '',
-    '',
-    '',
+    'Please tell us what you lost',
+    'Please tell us the color of the object you lost',
+    'Please provide a way to contact you',
+    'Please provide a valid street name',
+    'Invalid date (MM-DD-YYYY)',
     '',
   ]);
 
@@ -118,6 +120,8 @@ const Lost = () => {
       ...formData,
       [name]: value,
     });
+
+    validateForm();
   };
 
   const [curatedPhotos, setCuratedPhotos] = useState<any[]>([]);
@@ -164,19 +168,21 @@ const Lost = () => {
     const regexStreetName = /^[A-Za-z0-9\s\.,-]+$/; 
     const regexDate = /^\d{4}-\d{2}-\d{2}$/; 
     const isColorValid = commonColors.includes(formData[questions[step].name as keyof FormData].toLowerCase());
+    // ! la culoare e cu una in spate
+    console.log(formData[questions[step].name as keyof FormData].toLowerCase(), isColorValid);
 
     const newErrors = [
-      // ! modify the errors and make more accurate checks
-      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid string',
-      isColorValid ? '' : 'Invalid color',
-      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid string',
-      regexStreetName.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid street name',
+      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please tell us what you lost',
+      isColorValid ? '' : 'Please tell us the color of the object you lost',
+      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a way to contact you',
+      regexStreetName.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a valid street name',
       regexDate.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid date (YYYY-MM-DD)',
     ];
 
     setQuestionErrors(newErrors);
 
     setIsFormValid(getErrorByIndex(step) === '');
+    console.log('EROAREE ', getErrorByIndex(step));
   };
 
   useEffect(() => {
