@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import '../../styles.css';
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../../routes/routes';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 
 
 interface FormData {
@@ -15,6 +17,7 @@ interface FormData {
 
 const Lost = () => {
   const [progress, setProgress] = useState(10);
+  const [uploadOwnPhoto, setUploadOwnPhoto] = useState(false);
   const [qimageUrl, setqImageUrl] = useState("");
   const backSign = "<-";
   const Sign = "->";
@@ -84,6 +87,7 @@ const Lost = () => {
       setStep(step + 1);
       setProgress(progress + 10);
       setIsFormValid(false);
+      setUploadOwnPhoto(false);
     }
   };
 
@@ -92,6 +96,7 @@ const Lost = () => {
       setStep(step - 1);
       setProgress(progress - 10);
       setIsFormValid(false);
+      setUploadOwnPhoto(false);
     }
   };
 
@@ -189,6 +194,25 @@ const Lost = () => {
     // fetchCuratedPhotos(1); // Fetch curated photos for page 1 when the component mounts
   }, []);
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (qimageUrl) {
+      setqImageUrl("");
+    }
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const handleUploadImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click(); // Open the file input
+    }
+  };
+
   return (
     <div>
       <div className="fixed-header">
@@ -201,7 +225,7 @@ const Lost = () => {
         {step < questions.length && (
           <div className='question'>
             <div className='q-title' onClick={decreaseProgress}>{backSign} {questions[step].title}</div>
-            <div>
+            {!uploadOwnPhoto && (<div>
               <input
                 className='input-form'
                 type={questions[step].type}
@@ -212,7 +236,7 @@ const Lost = () => {
                 onChange={handleInputChange}
               />
               <div className="error-text">{getErrorByIndex(step)}</div>
-            </div>
+            </div>)}
             {step < questions.length - 1 && (
               <button className='btn' onClick={onNextPress}>
                 Next {Sign}
@@ -220,10 +244,30 @@ const Lost = () => {
             )}
             {step === questions.length - 1 && (
               <div className='photos-box'>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={uploadOwnPhoto}
+                    onChange={() => setUploadOwnPhoto(!uploadOwnPhoto)}
+                  />
+                  I want to upload my own photo
+              </label>
+              <input
+                type="file"
+                accept="image/*" // Restrict file selection to image files
+                onChange={handleFileChange}
+                style={{ display: 'none' }} // Hide the file input
+                ref={fileInputRef} // Ref to the file input
+              />
                 <button className='btn' onClick={() => {
-                  fetchCuratedPhotos(formData.q6);
+                  if (uploadOwnPhoto) {
+                    handleUploadImage();
+                  } else {
+                    fetchCuratedPhotos(formData.q6);
+                  }
                 }}>
-                  Search
+                  
+                  {uploadOwnPhoto ? <div style={{textAlign:"center"}}>Upload own photo <FontAwesomeIcon icon={faFileUpload} /></div>   : "Search"}
                 </button>
               </div>
             )}
@@ -231,17 +275,25 @@ const Lost = () => {
           </div>
         )}
       </div>
-      {step === questions.length - 1 && (
+      {step === questions.length - 1 && !uploadOwnPhoto && (
         <div className='photos-api'>
           {curatedPhotos.map((photo, index) => (
-            <img className='select-photo' key={index} src={photo.src.medium} onClick={() => setqImageUrl(photo.src.medium)} alt={`Photo ${index}`} />
+            <img className='select-photo' key={index} src={photo.src.medium} onClick={() => {
+              if (selectedImage) {
+                setSelectedImage(null);
+              }
+              setqImageUrl(photo.src.medium)
+            }} alt={`Photo ${index}`} />
           ))}
         </div>
       )}
-      {step === questions.length - 1 && curatedPhotos.length !== 0 && (
+      {step === questions.length - 1 && (
         <div className={`finish-box ${step === questions.length - 1 ? 'active' : ''}`}>
           {qimageUrl !== "" && (
             <img className='select-photo' key="sel-img" id="sel-img" src={qimageUrl} onClick={() => setqImageUrl("")} alt={`Photo selected`} />
+          )}
+          {selectedImage && (
+              <img className='select-photo' id="sel-img" onClick={() => setSelectedImage(null)} src={URL.createObjectURL(selectedImage)} alt="Selected" />
           )}
           <button className='btn' id='shadow-btn' onClick={() => console.log(qimageUrl)}>Finish {Sign}</button>
         </div>
