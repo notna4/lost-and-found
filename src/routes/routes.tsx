@@ -5,4 +5,5 @@ export enum PageRoutes {
     MakeDecision = "/make-decision",
     CreateLost = "/create-lost",
     CreateFind = "/create-find",
+    ItemPostedSuccess = "/success",
 }
