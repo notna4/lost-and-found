@@ -1,10 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../../styles.css';
 import { useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { PageRoutes } from '../../routes/routes';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
+import { collection, addDoc, Firestore, doc, getFirestore } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBfwTK_UcnWu0HbLVjXSJgnFe-d6STRkkM",
+  authDomain: "lost-and-found-373e1.firebaseapp.com",
+  projectId: "lost-and-found-373e1",
+  storageBucket: "lost-and-found-373e1.appspot.com",
+  messagingSenderId: "699180430397",
+  appId: "1:699180430397:web:ce9f1b1ef1823447f82654"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+
+const db = getFirestore();
+const storage = getStorage();
 
 interface FormData {
   q1: string;
@@ -16,6 +33,8 @@ interface FormData {
 }
 
 const Lost = () => {
+  const auth = getAuth()
+  const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState(10);
   const [uploadOwnPhoto, setUploadOwnPhoto] = useState(false);
   const [qimageUrl, setqImageUrl] = useState("");
@@ -213,6 +232,42 @@ const Lost = () => {
     }
   };
 
+  const sendToFirebase = async () => {
+    if (auth.currentUser) {
+      setLoading(true);
+      try {
+        const userId = auth.currentUser.uid;
+        const title = "Your Title Here"; // Replace with the actual title
+  
+        // Reference to the 'tasks' collection under the user's document
+        const userTasksCollection = collection(db, 'lost-items');
+  
+        await addDoc(userTasksCollection, {
+          userId,
+          objectLost: formData.q1,
+          color: formData.q2,
+          contact: formData.q3,
+          region: formData.q4,
+          date: formData.q5,
+          imageLink: qimageUrl ? qimageUrl : null,
+          isImageInStorage: selectedImage ? true : false,
+        }).then(async (doc) => {
+          if (selectedImage) {
+            const storageRef = ref(storage, `lost-items/${doc.id}`);
+            await uploadBytes(storageRef, selectedImage).then((snapshot) => {
+              console.log('Uploaded a file!');
+            });
+          }
+        });
+      } catch (e) {
+        console.error('Error adding document to Firestore:', e);
+      } finally {
+        setLoading(false);
+        navigate(PageRoutes.ItemPostedSuccess)
+      }
+    }
+  }
+
   return (
     <div>
       <div className="fixed-header">
@@ -222,57 +277,61 @@ const Lost = () => {
         </div>
       </div>
       <div className='fullscreen'>
-        {step < questions.length && (
-          <div className='question'>
-            <div className='q-title' onClick={decreaseProgress}>{backSign} {questions[step].title}</div>
-            {!uploadOwnPhoto && (<div>
-              <input
-                className='input-form'
-                type={questions[step].type}
-                name={questions[step].name}
-                placeholder={questions[step].placeholder}
-                autoComplete='off'
-                value={formData[questions[step].name as keyof FormData] || ''}
-                onChange={handleInputChange}
-              />
-              <div className="error-text">{getErrorByIndex(step)}</div>
-            </div>)}
-            {step < questions.length - 1 && (
-              <button className='btn' onClick={onNextPress}>
-                Next {Sign}
-              </button>
-            )}
-            {step === questions.length - 1 && (
-              <div className='photos-box'>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={uploadOwnPhoto}
-                    onChange={() => setUploadOwnPhoto(!uploadOwnPhoto)}
-                  />
-                  I want to upload my own photo
-              </label>
-              <input
-                type="file"
-                accept="image/*" // Restrict file selection to image files
-                onChange={handleFileChange}
-                style={{ display: 'none' }} // Hide the file input
-                ref={fileInputRef} // Ref to the file input
-              />
-                <button className='btn' onClick={() => {
-                  if (uploadOwnPhoto) {
-                    handleUploadImage();
-                  } else {
-                    fetchCuratedPhotos(formData.q6);
-                  }
-                }}>
-                  
-                  {uploadOwnPhoto ? <div style={{textAlign:"center"}}>Upload own photo <FontAwesomeIcon icon={faFileUpload} /></div>   : "Search"}
+        {loading ? (
+          <div>Loading..</div>
+        ):(
+          step < questions.length && (
+            <div className='question'>
+              <div className='q-title' onClick={decreaseProgress}>{backSign} {questions[step].title}</div>
+              {!uploadOwnPhoto && (<div>
+                <input
+                  className='input-form'
+                  type={questions[step].type}
+                  name={questions[step].name}
+                  placeholder={questions[step].placeholder}
+                  autoComplete='off'
+                  value={formData[questions[step].name as keyof FormData] || ''}
+                  onChange={handleInputChange}
+                />
+                <div className="error-text">{getErrorByIndex(step)}</div>
+              </div>)}
+              {step < questions.length - 1 && (
+                <button className='btn' onClick={onNextPress}>
+                  Next {Sign}
                 </button>
-              </div>
-            )}
-            
-          </div>
+              )}
+              {step === questions.length - 1 && (
+                <div className='photos-box'>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={uploadOwnPhoto}
+                      onChange={() => setUploadOwnPhoto(!uploadOwnPhoto)}
+                    />
+                    I want to upload my own photo
+                </label>
+                <input
+                  type="file"
+                  accept="image/*" // Restrict file selection to image files
+                  onChange={handleFileChange}
+                  style={{ display: 'none' }} // Hide the file input
+                  ref={fileInputRef} // Ref to the file input
+                />
+                  <button className='btn' onClick={() => {
+                    if (uploadOwnPhoto) {
+                      handleUploadImage();
+                    } else {
+                      fetchCuratedPhotos(formData.q6);
+                    }
+                  }}>
+                    
+                    {uploadOwnPhoto ? <div style={{textAlign:"center"}}>Upload own photo <FontAwesomeIcon icon={faFileUpload} /></div>   : "Search"}
+                  </button>
+                </div>
+              )}
+              
+            </div>
+          )
         )}
       </div>
       {step === questions.length - 1 && !uploadOwnPhoto && (
@@ -295,7 +354,9 @@ const Lost = () => {
           {selectedImage && (
               <img className='select-photo' id="sel-img" onClick={() => setSelectedImage(null)} src={URL.createObjectURL(selectedImage)} alt="Selected" />
           )}
-          <button className='btn' id='shadow-btn' onClick={() => console.log(qimageUrl)}>Finish {Sign}</button>
+          {(selectedImage || qimageUrl) && (
+            <button className='btn' id='shadow-btn' onClick={sendToFirebase}>Finish {Sign}</button>
+          )}
         </div>
       )}
     </div>
