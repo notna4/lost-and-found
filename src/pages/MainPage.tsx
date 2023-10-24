@@ -6,6 +6,7 @@ import { PageRoutes } from '../routes/routes';
 const MainPage = () => {
   const auth = getAuth();
   const navigate = useNavigate();
+  const sign = "->";
 
   const [user, setUser] = useState("");
 
@@ -22,9 +23,24 @@ const MainPage = () => {
   }
 
   return (
-    <div>
-      <div>Main, {user}</div>
-      <button onClick={logOut}>Log out</button>
+    <div className='main-container'>
+      {/* extract these as different components */}
+      <div className='topbar-container'>
+        <div>Lost and Found TM</div>
+        <button className='btn' onClick={() => navigate(PageRoutes.CreateLost)}>
+                I lost something {sign}
+              </button>
+              <button className='btn' onClick={() => navigate(PageRoutes.CreateFind)}>
+                I found something {sign}
+              </button>
+        <div className='topbar-right'>
+          <div>{user}</div>
+          <button onClick={logOut}>Log out</button>
+        </div>
+      </div>
+      <div className='content-container'>
+        {/* posts */}
+      </div>
     </div>
   );
 }
