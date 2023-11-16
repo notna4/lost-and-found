@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../routes/routes';
-import PostsContainer from '../componets/PostsContainer';
+import PostsContainer from '../components/PostsContainer';
 
 const MainPage = () => {
   const auth = getAuth();
