@@ -28,15 +28,20 @@ const MainPage = () => {
       <div className='topbar-container'>
         <div>Lost and Found TM</div>
         <div className='mobile-menu'>
-          <button className='btn' onClick={() => navigate(PageRoutes.CreateLost)}>
-            I lost something {sign}
-          </button>
-          <button className='btn' onClick={() => navigate(PageRoutes.CreateFind)}>
-            I found something {sign}
-          </button>
+          <div className='btn-container-main'>
+            <button className='btn' id='shadow-btn' onClick={() => navigate(PageRoutes.CreateLost)}>
+              I lost something {sign}
+            </button>
+          </div>
+          <div className='btn-container-main'>
+            <button className='btn' id='shadow-btn' onClick={() => navigate(PageRoutes.CreateFind)}>
+              I found something {sign}
+            </button>
+          </div>
           <div className='topbar-right'>
-            <div>{user}</div>
-            <button onClick={logOut}>Log out</button>
+            {/* poate facem dropdown cu numele si acolo sa fie logout */}
+            {/* <div>{user}</div> */}
+            <button className='logout-button' id='shadow-btn' onClick={logOut}>Logout</button>
           </div>
         </div>
       </div>

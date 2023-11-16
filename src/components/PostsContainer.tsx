@@ -93,7 +93,7 @@ const PostsContainer = () => {
               <h2>{post.objectLost}</h2>
               <p className='region-tag'>{post.region}</p>
               <img className='photo-tag' key={post.imageLink} src={post.imageLink} alt="Lost Item" />
-              <div className='contact-tag' onClick={() => {
+              <div className='contact-tag' id='shadow-btn' onClick={() => {
                 if (viewContacts.includes(index)) {
                     const indexToRemove = viewContacts.indexOf(index);
                     if (indexToRemove !== -1) {
