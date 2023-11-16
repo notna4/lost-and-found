@@ -8,6 +8,8 @@ import { faFileUpload } from '@fortawesome/free-solid-svg-icons';
 import { collection, addDoc, Firestore, doc, getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, uploadString } from 'firebase/storage';
+import Lottie from 'react-lottie';
+import load from '../../assets/load.json'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBfwTK_UcnWu0HbLVjXSJgnFe-d6STRkkM",
@@ -41,6 +43,15 @@ const Lost = () => {
   const backSign = "<-";
   const Sign = "->";
   const navigate = useNavigate();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: load,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
 
   const questions = [
     {
@@ -262,8 +273,10 @@ const Lost = () => {
       } catch (e) {
         console.error('Error adding document to Firestore:', e);
       } finally {
-        setLoading(false);
-        navigate(PageRoutes.ItemPostedSuccess)
+        setTimeout(() => {
+            setLoading(false);
+            navigate(PageRoutes.ItemPostedSuccess)
+          }, 3000);
       }
     }
   }
@@ -278,7 +291,7 @@ const Lost = () => {
       </div>
       <div className='fullscreen'>
         {loading ? (
-          <div>Loading..</div>
+          <Lottie options={defaultOptions} height={200} width={200} />
         ):(
           step < questions.length && (
             <div className='question'>
