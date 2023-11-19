@@ -137,15 +137,18 @@ html, body {
   border: 2px solid #505050;
 }
 
-.logout-button {
-  text-align: start;
+.btn-dropdown {
   font-size: smaller; 
   color: rgb(214, 213, 213);
-  padding-left: 20px;
   height: 60px; 
-  width: 80px;
+  width: 100%;
   flex-shrink: 0;
-  border-radius: 50%; 
+  text-align: center;
+  vertical-align: middle;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px; 
   border: 1px solid #505050;
   background: #1B1B1B;
   font-family: Inter;
@@ -158,11 +161,13 @@ html, body {
   }
 }
 
-.logout-button:hover {
-  font-weight: bold; 
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
-  border: 2px solid #505050;
+.btn-dropdown:hover {
+  background-color: white;
+  color: black;
+  transform: scale(0.98);
 }
+
+
 
 .text-hover {
   cursor: pointer;
@@ -399,11 +404,11 @@ html, body {
   z-index: 1000;
   backdrop-filter: blur(50px);
 
-  @media (max-width: 768px) {
+  /* @media (max-width: 768px) {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+  } */
 }
 
 .mobile-menu {
@@ -417,13 +422,47 @@ html, body {
 }
 
 .topbar-right {
-  flex-direction: row;
-  padding: 20px;
-
-  @media (max-width: 768px) {
-    display: block;
-  }
+  cursor: pointer;
+  background-color: #1b1b1b;
+  margin-right: 30px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid #505050;
 }
+
+.dropdown-bg {
+  background-color: #50505041;
+  backdrop-filter: blur(50px);
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  position: fixed;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown {
+  width: 300px;
+  height:300px;
+  border: 1px solid Black;
+
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: center;
+
+  background-color: #1b1b1b;
+  backdrop-filter: blur(50px);
+  -webkit-box-shadow: 0px 0px 51px 11px rgba(0,0,0,0.41);
+  -moz-box-shadow: 0px 0px 51px 11px rgba(0,0,0,0.41);
+  box-shadow: 0px 0px 51px 11px rgba(0,0,0,0.41);
+  z-index: 1000;
+}
+
+
 
 .burger-menu {
   background-color: #1B1B1B;
@@ -526,6 +565,8 @@ html, body {
 
 .contact-tag:hover {
   transform: scale(0.95);
+  background-color: white;
+  color: black;
 }
 
 

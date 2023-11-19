@@ -10,41 +10,47 @@ const MainPage = () => {
   const sign = "->";
 
   const [user, setUser] = useState("");
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUser(user.displayName!);
-    } else {
-      navigate(PageRoutes.Signin);
-    }
-  });
+  const [isDropdown, setIsDropdown] = useState(false);
+  let [count, setCount] = useState(0);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user.displayName!);
+      } else {
+        navigate(PageRoutes.Signin);
+      }
+    });
+  }, [])
 
   const logOut = () => {
     auth.signOut();
   }
+
+  const handleDropdown = () => {
+    console.log(isDropdown);
+    setIsDropdown(!isDropdown);
+  } 
 
   return (
     <div className='main-container'>
       {/* extract these as different components */}
       <div className='topbar-container'>
         <div>Lost and Found TM</div>
-        <div className='mobile-menu'>
-          <div className='btn-container-main'>
-            <button className='btn' id='shadow-btn' onClick={() => navigate(PageRoutes.CreateLost)}>
+        <div className='topbar-right' onClick={handleDropdown}>{user}</div>
+      </div>
+      {isDropdown ? <div className='dropdown-bg' onClick={handleDropdown}>
+        <div className='dropdown'>
+          <button className='btn-dropdown'  onClick={() => navigate(PageRoutes.CreateLost)}>
               I lost something {sign}
             </button>
-          </div>
-          <div className='btn-container-main'>
-            <button className='btn' id='shadow-btn' onClick={() => navigate(PageRoutes.CreateFind)}>
-              I found something {sign}
-            </button>
-          </div>
-          <div className='topbar-right'>
-            {/* poate facem dropdown cu numele si acolo sa fie logout */}
-            {/* <div>{user}</div> */}
-            <button className='logout-button' id='shadow-btn' onClick={logOut}>Logout</button>
-          </div>
+          <button className='btn-dropdown' onClick={() => navigate(PageRoutes.CreateFind)}>
+            I found something {sign}
+          </button>
+          <div className='btn-dropdown' onClick={logOut}>Logout</div>
+
         </div>
-      </div>
+      </div> : <div></div>}
       <div className='content-container'>
         <PostsContainer />
       </div>
