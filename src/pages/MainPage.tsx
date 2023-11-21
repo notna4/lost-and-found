@@ -3,6 +3,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { PageRoutes } from '../routes/routes';
 import PostsContainer from '../components/PostsContainer';
+import Dropdown from '../components/Dropdown';
+import Topbar from '../components/Topbar';
 
 const MainPage = () => {
   const auth = getAuth();
@@ -34,24 +36,14 @@ const MainPage = () => {
 
   return (
     <div className='main-container'>
-      {/* extract these as different components */}
-      <div className='topbar-container'>
-        <div>Lost and Found TM</div>
-        <div className='topbar-right' onClick={handleDropdown}>{'Welcome back, ' + user + ' ▼'}</div>
-      </div>
-      {isDropdown ? <div className='dropdown-bg' onClick={handleDropdown}>
-        <div className='dropdown'>
-          <div className='topbar-right' onClick={handleDropdown}>{'Welcome back, ' + user + ' ▼'}</div>
-          <button className='btn-dropdown'  onClick={() => navigate(PageRoutes.CreateLost)}>
-            I lost something {sign}
-          </button>
-          <button className='btn-dropdown' onClick={() => navigate(PageRoutes.CreateFind)}>
-            I found something {sign}
-          </button>
-          <div className='btn-dropdown' onClick={logOut}>Logout</div>
-
-        </div>
-      </div> : <div></div>}
+      <Topbar user={user} handleDropdown={handleDropdown} />
+      <Dropdown
+        isDropdown={isDropdown}
+        user={user}
+        sign={sign}
+        handleDropdown={handleDropdown}
+        logOut={logOut}
+      />
       <div className='content-container'>
         <PostsContainer />
       </div>
