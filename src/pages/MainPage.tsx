@@ -37,13 +37,14 @@ const MainPage = () => {
       {/* extract these as different components */}
       <div className='topbar-container'>
         <div>Lost and Found TM</div>
-        <div className='topbar-right' onClick={handleDropdown}>{user}</div>
+        <div className='topbar-right' onClick={handleDropdown}>{'Welcome back, ' + user + ' ▼'}</div>
       </div>
       {isDropdown ? <div className='dropdown-bg' onClick={handleDropdown}>
         <div className='dropdown'>
+          <div className='topbar-right' onClick={handleDropdown}>{'Welcome back, ' + user + ' ▼'}</div>
           <button className='btn-dropdown'  onClick={() => navigate(PageRoutes.CreateLost)}>
-              I lost something {sign}
-            </button>
+            I lost something {sign}
+          </button>
           <button className='btn-dropdown' onClick={() => navigate(PageRoutes.CreateFind)}>
             I found something {sign}
           </button>

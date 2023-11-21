@@ -8,8 +8,8 @@ import { initializeApp } from "firebase/app";
 import MakeDecisionPage from './pages/MakeDecision';
 import SignInPage from './pages/register-pages/SignInPage';
 import MainPage from './pages/MainPage';
-import Lost from './pages/create-posts/create-lost';
-import Find from './pages/create-posts/create-find';
+import Lost from './pages/create-posts/CreateLost';
+import Find from './pages/create-posts/CreateFind';
 import SuccessPage from './pages/create-posts/SuccessPage';
 
 // Your web app's Firebase configuration
