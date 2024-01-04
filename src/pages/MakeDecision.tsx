@@ -8,6 +8,7 @@ const MakeDecison: React.FC = () => {
   const auth = getAuth();
   const navigate = useNavigate();
   const sign = "->";
+  const backSign = "<-";
 
   const [user, setUser] = useState("");
 
@@ -23,6 +24,7 @@ const MakeDecison: React.FC = () => {
     <div className='divide-page'>
       <div className='left-side'>
         <div className='register-box'>
+          <h1 className='register-header-back' onClick={() => navigate(PageRoutes.Main)}>{backSign} Main</h1>
           <h1 className='register-header'>Let's get you started, {user}</h1>
           <h2 className='register-subheader'>What happened?</h2>
           <form className='input-form-box'>

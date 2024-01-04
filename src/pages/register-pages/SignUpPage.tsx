@@ -21,7 +21,7 @@ const SignUpPage: React.FC = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [passwordRequirementsVisible, setPasswordRequirementsVisible] = useState(false);
 
@@ -64,7 +64,7 @@ const SignUpPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    validateForm();
+    // validateForm();
 
     if (isFormValid) {
       const emailExists = await checkIfEmailExists(formData.email);
@@ -193,7 +193,7 @@ const SignUpPage: React.FC = () => {
                 onBlur={handlePasswordInputBlur}
               />
               <div className="error-text">{passwordError}</div>
-              {passwordRequirementsSection}
+              {/* {passwordRequirementsSection} */}
             </div>
             <div>
               <div>
