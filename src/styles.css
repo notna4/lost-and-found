@@ -31,6 +31,10 @@ html, body {
   width: 50%; /* 50% width on desktop */
 }
 
+.register-header-back {
+  cursor: pointer;
+}
+
 .register-header {
   color: white;
 }
@@ -445,6 +449,41 @@ html, body {
   display: flex;
   justify-content: flex-end; /* Align to the top right */
   align-items: flex-start; /* Align to the top right */
+}
+
+.upper-modal {
+  background-color: #0E0E0E;
+  padding: 10px;
+  border-radius: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: .4s all;
+  border: 2px solid #0E0E0E;
+}
+
+.upper-modal:hover {
+  border: 2px solid gray;
+  transform: scale(0.95);
+}
+
+.spacer {
+  height: 20px;
+}
+
+.modal-bg {
+  background-color: #50505041;
+  backdrop-filter: blur(50px);
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .dropdown {

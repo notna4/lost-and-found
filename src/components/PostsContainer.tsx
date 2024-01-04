@@ -107,8 +107,8 @@ const PostsContainer = () => {
                 }
                 }}>
                 <p>{viewContacts.includes(index) ? post.contact : "I found it"}</p>
-                </div>
-              <p className='date-tag'>{formatDate(post.date)}</p>
+              </div>
+              <p className='date-tag'>{formatDate(post.date)} ━ {post.color}</p>
               {/* <p>Color: {post.color}</p> */}
             </div>
           ))}

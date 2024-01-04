@@ -106,17 +106,17 @@ const Lost = () => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const onNextPress = () => {
-    validateForm();
-    if (isFormValid) {
+    // validateForm();
+    // if (isFormValid) {
       increaseProgress();
-    }
+    // }
   };
 
   const increaseProgress = () => {
     if (step < questions.length - 1) {
       setStep(step + 1);
       setProgress(progress + 10);
-      setIsFormValid(false);
+      // setIsFormValid(false);
       setUploadOwnPhoto(false);
     }
   };
@@ -139,14 +139,14 @@ const Lost = () => {
     q6: '',
   });
 
-  const [questionErrors, setQuestionErrors] = useState<string[]>([
-    'Please tell us what you lost',
-    'Please tell us the color of the object you lost',
-    'Please provide a way to contact you',
-    'Please provide a valid street name',
-    'Invalid date (MM-DD-YYYY)',
-    '',
-  ]);
+  // const [questionErrors, setQuestionErrors] = useState<string[]>([
+  //   'Please tell us what you lost',
+  //   'Please tell us the color of the object you lost',
+  //   'Please provide a way to contact you',
+  //   'Please provide a valid street name',
+  //   'Invalid date (MM-DD-YYYY)',
+  //   '',
+  // ]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -156,7 +156,7 @@ const Lost = () => {
       [name]: value,
     });
 
-    validateForm();
+    // validateForm();
   };
 
   const [curatedPhotos, setCuratedPhotos] = useState<any[]>([]);
@@ -183,42 +183,42 @@ const Lost = () => {
     }
   };
 
-  const getErrorByIndex = (index: number): string => {
-    if (index >= 0 && index < questionErrors.length) {
-      return questionErrors[index];
-    }
-    return ''; 
-  };
+  // const getErrorByIndex = (index: number): string => {
+  //   if (index >= 0 && index < questionErrors.length) {
+  //     return questionErrors[index];
+  //   }
+  //   return ''; 
+  // };
 
-  const setErrorAtIndex = (index: number, errorMessage: string) => {
-    if (index >= 0 && index < questionErrors.length) {
-      const updatedErrors = [...questionErrors];
-      updatedErrors[index] = errorMessage;
-      setQuestionErrors(updatedErrors);
-    }
-  };
+  // const setErrorAtIndex = (index: number, errorMessage: string) => {
+  //   if (index >= 0 && index < questionErrors.length) {
+  //     const updatedErrors = [...questionErrors];
+  //     updatedErrors[index] = errorMessage;
+  //     setQuestionErrors(updatedErrors);
+  //   }
+  // };
 
-  const validateForm = () => {
-    const regexString = /^[^\s]+/;
-    const regexStreetName = /^[A-Za-z0-9\s\.,-]+$/; 
-    const regexDate = /^\d{4}-\d{2}-\d{2}$/; 
-    const isColorValid = commonColors.includes(formData[questions[step].name as keyof FormData].toLowerCase());
-    // ! la culoare e cu una in spate
-    console.log(formData[questions[step].name as keyof FormData].toLowerCase(), isColorValid);
+  // const validateForm = () => {
+  //   const regexString = /^[^\s]+/;
+  //   const regexStreetName = /^[A-Za-z0-9\s\.,-]+$/; 
+  //   const regexDate = /^\d{4}-\d{2}-\d{2}$/; 
+  //   const isColorValid = commonColors.includes(formData[questions[step].name as keyof FormData].toLowerCase());
+  //   // ! la culoare e cu una in spate
+  //   console.log(formData[questions[step].name as keyof FormData].toLowerCase(), isColorValid);
 
-    const newErrors = [
-      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please tell us what you lost',
-      isColorValid ? '' : 'Please tell us the color of the object you lost',
-      regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a way to contact you',
-      regexStreetName.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a valid street name',
-      regexDate.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid date (YYYY-MM-DD)',
-    ];
+  //   const newErrors = [
+  //     regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please tell us what you lost',
+  //     isColorValid ? '' : 'Please tell us the color of the object you lost',
+  //     regexString.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a way to contact you',
+  //     regexStreetName.test(formData[questions[step].name as keyof FormData]) ? '' : 'Please provide a valid street name',
+  //     regexDate.test(formData[questions[step].name as keyof FormData]) ? '' : 'Invalid date (YYYY-MM-DD)',
+  //   ];
 
-    setQuestionErrors(newErrors);
+    // setQuestionErrors(newErrors);
 
-    setIsFormValid(getErrorByIndex(step) === '');
-    console.log('EROAREE ', getErrorByIndex(step));
-  };
+    // setIsFormValid(getErrorByIndex(step) === '');
+    // console.log('EROAREE ', getErrorByIndex(step));
+  // };
 
   useEffect(() => {
     // fetchCuratedPhotos(1); // Fetch curated photos for page 1 when the component mounts
@@ -361,7 +361,7 @@ const Lost = () => {
                   value={formData[questions[step].name as keyof FormData] || ''}
                   onChange={handleInputChange}
                 />
-                <div className="error-text">{getErrorByIndex(step)}</div>
+                {/* <div className="error-text">{getErrorByIndex(step)}</div> */}
               </div>
             )}
             {step < questions.length - 1 && (
